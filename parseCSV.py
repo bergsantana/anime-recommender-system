@@ -34,13 +34,12 @@ def format_anime_list(file1, file2, output_file):
             print(f"ERROR")
             print(e)
         acc += 1
-        if acc > 1222333:
+        if acc > 500000:
             break
     df2.to_csv(output_file, index=False)
 
 
-file1='anime.csv'
-file2='rating_complete.csv'
-output='updated-list.csv'
+file1='./anime.csv'  
+output='./updated-list.csv'
 
 format_anime_list(file1, file2, output)
