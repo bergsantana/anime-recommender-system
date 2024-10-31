@@ -1,6 +1,5 @@
-ratings = []
-ratings.append({"title" : "bleach", "rating": 5})
+import pandas as pd 
 
-lookup = map(lambda animes: animes['title'] == "bleach", ratings)  
+df = pd.read_csv('anime.csv', nrows=7421)
 
-print()
+df.to_csv('anime.csv')

@@ -1,45 +1,67 @@
 import pandas as pd
 
-def format_anime_list(file1, file2, output_file):
-    df1 = pd.read_csv(file1)
-    df2 = pd.read_csv(file2)
+def format_anime_list(file1  , output_file):
+    df = pd.read_csv(file1)
+    dfinal = pd.read_csv(output_file)
 
-    my_row = df1.loc[df1['MAL_ID'] == 43]
-    
-    df2['name'] = None
+    print(dfinal.columns.to_list())
 
-       
-    print(df2.columns.tolist())
-    print(df1.columns.tolist())
+    data = {}
 
-    acc = 1
-    for row in df2.iterrows():
-        # print(f"Linha do data frame")
+    size_columns =  dfinal.columns.to_list()[len(dfinal.columns.to_list()) -1]
+    acc = 0
+    for row in df.iterrows():
+        # print(row[1].values) # linha
+        index = row[1].values[0]
+        user_id = row[1].values[1]
+        anime_id = row[1].values[2]
+        rating = row[1].values[3]
+        
         # print(row[1].values[1])
-        try:
+        # print(row[1].values[2])
+        # print(row[1].values[3])
+        # print(row[1].values[4])
+    
+         
 
-            anime_id = row[1].values[1]
-        #     anime_id = row[2]
-            name = df1[df1['MAL_ID'] == anime_id]
-             
-            # print(f"id - {anime_id}")
-            # print(f"name - {name['Name']}")
-            # print(type(name['Name']))
-            # print(name['Name'].values[0])
-        #     print(name['MAL_ID'])
-        #     print(name['Name'].to_dict)
-        #    #  row[6] = df1.loc[df1['MAL_ID'] == row[2]]
-            df2.at[row[0], 'name'] = name['Name'].values[0]
-        except Exception as e:
-            print(f"ERROR")
-            print(e)
+        if user_id not in data:
+            # data[str(user_id)] = [None] * len(dfinal.columns.to_list())
+            data[user_id] =  [None] * int( size_columns)
+            data[user_id][anime_id] = rating
+        else:
+            data[user_id][anime_id] = rating
+        
+        # print(user_id)
+        # print(data[user_id])
+        print(f"acc - {acc}")
+        #print(data[user_id])
         acc += 1
-        if acc > 500000:
-            break
-    df2.to_csv(output_file, index=False)
+        # dfinal.at[index, 'user_id'] = user_id
+        # dfinal.at[index, anime_id] = rating
+
+   # dfinal.to_csv('teste-final.csv')
+
+    return pd.DataFrame.from_dict(data, orient='index' ).to_csv('teste-final.csv')
+        
+    # columns = ['user_id']
+    # data = []
+
+    # all_anime = pd.read_csv('anime.csv')
+
+    # for anime in all_anime.iterrows():
+    #     print(anime[1].values[1])
+    #     print(anime[1].values[0])
+        
+    #     columns.append(anime[1].values[0])
 
 
-file1='./anime.csv'  
-output='./updated-list.csv'
 
-format_anime_list(file1, file2, output)
+    # return pd.DataFrame(data=[], columns=columns).to_csv(output_file)
+ 
+
+
+file1='./user-ratings.csv'
+output='./user-ratings-final.csv'
+
+
+format_anime_list(file1, output)
